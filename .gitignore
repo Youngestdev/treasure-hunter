@@ -3,3 +3,6 @@ amebo.py
 venv/
 __pycache__/
 .idea/
+
+.vercel
+.env

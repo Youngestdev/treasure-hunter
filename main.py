@@ -7,6 +7,7 @@ import re
 from multiprocessing.pool import ThreadPool as Pool
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
+from decouple import config
 
 # It won't be bad to gossip y'know.
 
@@ -30,9 +31,11 @@ def OtherUserNodes():
         seen.add(visited)
         return connectedNodes
 
+TOKEN = config('token')
+NUMBER = config('number')
 
-headers = {'gomoney': '09058640120',
-           'Authorization': 'Bearer <TOKEN>'}
+headers = {'gomoney': f'{NUMBER}',
+           'Authorization': 'Bearer {0}'.format(TOKEN)}
 
 seen = set()
 
@@ -44,7 +47,7 @@ retry_strategy = Retry(
     total=1000,  # Increase.
     status_forcelist=[429, 500, 502, 503, 504],
     method_whitelist=["GET"],
-    backoff_factor=1
+    backoff_factor=2
 )
 
 adapter = HTTPAdapter(max_retries=retry_strategy)
